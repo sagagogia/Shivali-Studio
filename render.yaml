@@ -4,7 +4,7 @@ services:
     name: shivali-studio-codex
     runtime: docker
     repo: https://github.com/sagagogia/Shivali-Studio
-    branch: codex/marketing-rewrite
+    branch: main
     region: singapore
     plan: 0.5c-512mb
     numInstances: 1

@@ -4,7 +4,7 @@ WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 # One filesystem installation layer also fits VFS-backed local build environments.
 # Optional trust mounts are never persisted in the image.
-COPY . .
+COPY studio-source.zip /tmp/studio-source.zip
 RUN --mount=type=secret,id=proxy_ca --mount=type=secret,id=system_ca \
     set -eu; \
     if [ -f /run/secrets/proxy_ca ]; then export NODE_EXTRA_CA_CERTS=/run/secrets/proxy_ca; fi; \
@@ -15,6 +15,8 @@ RUN --mount=type=secret,id=proxy_ca --mount=type=secret,id=system_ca \
     apt-get update; \
     apt-get install --yes --no-install-recommends python3 python3-venv ffmpeg git ca-certificates tini util-linux; \
     rm -rf /var/lib/apt/lists/* /etc/apt/apt.conf.d/99-build-ca; \
+    python3 -c 'from zipfile import ZipFile; from pathlib import PurePosixPath; z=ZipFile("/tmp/studio-source.zip"); assert all(not PurePosixPath(n).is_absolute() and ".." not in PurePosixPath(n).parts for n in z.namelist()); z.extractall("/app")'; \
+    rm /tmp/studio-source.zip; \
     if [ -f /run/secrets/system_ca ]; then export GIT_SSL_CAINFO=/run/secrets/system_ca PIP_CERT=/run/secrets/system_ca; fi; \
     git init /opt/openmontage; \
     git -C /opt/openmontage remote add origin https://github.com/calesthio/OpenMontage.git; \
