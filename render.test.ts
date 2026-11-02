@@ -1,0 +1,54 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,readFile,readdir,symlink,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import {renderPreview} from '../src/studio/render.ts';
+
+test('real offline OpenMontage still preview verifies 27 seconds at 1080x1920', {timeout:180000}, async()=>{
+ const dir=await mkdtemp(path.join(tmpdir(),'shivali-render-'));
+ try{
+ const image=path.join(dir,'fixture.png');
+ execFileSync('ffmpeg',['-v','error','-f','lavfi','-i','color=c=blue:s=96x144','-frames:v','1','-threads','1',image]);
+ const hash=createHash('sha256').update(await readFile(image)).digest('hex');
+ const input={campaignId:'fixture',version:1,title:'Fixture',images:[{id:'image1',path:image,sha256:hash}],outputDir:path.join(dir,'renders')};
+ const result=await renderPreview(input);
+ assert.equal(result.report.durationSeconds,27);
+ assert.equal(result.report.width,1080);
+ assert.equal(result.report.height,1920);
+ assert.equal(result.report.tool,'video_stitch');
+ assert.equal(result.report.fullDecodePassed,true);
+ assert.equal(createHash('sha256').update(await readFile(image)).digest('hex'),hash);
+ const artifacts=await readdir(path.dirname(result.outputPath));
+ assert.deepEqual(artifacts.sort(),['asset-manifest.json','packet.json','preview.mp4','render-report.json']);
+ await assert.rejects(renderPreview({...input,version:0}),/Invalid campaign/);
+ await assert.rejects(renderPreview({...input,images:[]}),/Invalid preview/);
+ await assert.rejects(renderPreview({...input,images:Array(13).fill(input.images[0])}),/Invalid preview/);
+ await assert.rejects(renderPreview({...input,images:[{...input.images[0],path:'relative.png'}]}),/Invalid image/);
+ await assert.rejects(renderPreview({...input,images:[{...input.images[0],sha256:'0'.repeat(64)}]}),/mismatch/);
+ const link=path.join(dir,'link.png');await symlink(image,link);
+ await assert.rejects(renderPreview({...input,images:[{...input.images[0],path:link}]}),/symlinks/);
+ const brokenRoot=path.join(dir,'broken');await import('node:fs/promises').then(fs=>fs.mkdir(brokenRoot));
+ await assert.rejects(renderPreview({...input,openMontageRoot:brokenRoot}),/unavailable/);
+ const runs=await readdir(input.outputDir);
+ const failed=path.join(input.outputDir,runs.find(name=>name!==path.basename(path.dirname(result.outputPath)))!);
+ assert.ok((await readdir(failed)).includes('failure.json'));
+ assert.ok(!(await readdir(failed)).includes('preview.mp4'));
+ const soundtrack=path.join(dir,'tone.wav');
+ execFileSync('ffmpeg',['-v','error','-f','lavfi','-i','sine=frequency=440:duration=2','-ar','48000',soundtrack]);
+ const music={id:'music1',path:soundtrack,sha256:createHash('sha256').update(await readFile(soundtrack)).digest('hex'),licenseConfirmed:true};
+ await assert.rejects(renderPreview({...input,music:{...music,licenseConfirmed:false}}),/license confirmation/);
+ await assert.rejects(renderPreview({...input,music:{...music,sha256:'0'.repeat(64)}}),/mismatch/);
+ const withMusic=await renderPreview({...input,music});
+ const audio=withMusic.report.audio as Record<string,unknown>;
+ assert.equal(audio.mode,'licensed-upload');
+ assert.equal(audio.sampleRate,48000);
+ assert.equal(audio.noClippingPassed,true);
+ assert.equal(audio.nonSilentPassed,true);
+ assert.equal(withMusic.report.durationSeconds,27);
+ assert.equal((result.report.audio as Record<string,unknown>).mode,'silent');
+ assert.equal(createHash('sha256').update(await readFile(soundtrack)).digest('hex'),music.sha256);
+ }finally{await rm(dir,{recursive:true,force:true});}
+});

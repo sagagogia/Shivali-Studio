@@ -1,0 +1,6 @@
+/* Hallmark · tokens · Atelier app screen · system fonts · v2.0.0 */
+:root {
+ --studio-paper:#f3f1eb; --studio-ground:#eae7df; --studio-card:#faf9f5; --studio-ink:#292a2b; --studio-secondary:#53575b; --studio-muted:#595f5c; --studio-rule:#d7d6ce; --studio-field-edge:#7b807a; --studio-accent:#345570; --studio-accent-soft:#e4eaf0; --studio-inverse:#faf9f5; --studio-focus:#426f98; --studio-error:#8c3933; --studio-error-bg:#f5e6e1; --studio-success:#3c6353; --studio-shadow:#292a2b26; --studio-transparent:transparent;
+ --studio-font:Arial, Helvetica, system-ui, sans-serif; --studio-brand:Georgia, 'Times New Roman', serif;
+ --studio-radius:3px; --studio-duration:140ms;
+}
