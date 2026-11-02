@@ -1,0 +1,10 @@
+{
+  "theme": "Atelier",
+  "scope": "app",
+  "genre": "editorial",
+  "signature": "Garment-first campaign workbench and 27-second production timeline",
+  "material": "Confirmed garment metadata; no invented source photographs",
+  "fonts": "System sans body and Georgia wordmark; no external font requests",
+  "review": "Hallmark rendered at five viewport/page variants; 0 failures, 0 warnings",
+  "waiver": "39b: multi-line campaign selection rows contain design number, name and state; standard toolbar buttons keep normal control height"
+}

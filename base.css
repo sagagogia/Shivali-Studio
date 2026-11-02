@@ -1,0 +1,5 @@
+/* Hallmark · checked: 2026-11-02 · scope: app · theme: Atelier · v2.0.0 */
+:root { --document-bg: #f5f2eb; --document-ink: #292723; }
+html { -webkit-text-size-adjust: 100%; }
+html, body { margin: 0; padding: 0; background: var(--document-bg); color: var(--document-ink); color-scheme: light; overflow-x: clip; }
+* { box-sizing: border-box; }

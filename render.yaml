@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://render.com/schema/render.yaml.json
+services:
+  - type: web
+    name: shivali-studio-codex
+    runtime: docker
+    repo: https://github.com/sagagogia/Shivali-Studio
+    branch: codex/marketing-rewrite
+    region: singapore
+    plan: 0.5c-512mb
+    numInstances: 1
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    autoDeployTrigger: 'off'
+    healthCheckPath: /api/health
+    maxShutdownDelaySeconds: 210
+    disk:
+      name: shivali-studio-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SHIVALI_HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: '10000'
+      - key: SHIVALI_DATA_DIR
+        value: /var/data/studio
+      - key: SHIVALI_OPENMONTAGE_ROOT
+        value: /opt/openmontage
+      - key: SHIVALI_ENABLE_PAID_GENERATION
+        value: 'false'
+      - key: SHIVALI_ENABLE_ADVANCED_GENERATOR
+        value: 'false'
+      - key: SHIVALI_AUTH_PASSWORD
+        sync: false
+      - key: SHIVALI_SESSION_SECRET
+        generateValue: true

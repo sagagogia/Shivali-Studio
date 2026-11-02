@@ -1,0 +1,29 @@
+{
+  "name": "shivali-marketing-studio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/start-studio.mjs --dev",
+    "build": "next build",
+    "start": "node scripts/start-studio.mjs",
+    "brand": "node scripts/build-brand-assets.mjs",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "studio:check": "node scripts/check-studio.mjs"
+  },
+  "dependencies": {
+    "@tanstack/react-virtual": "^3.14.10",
+    "@vercel/blob": "^2.8.0",
+    "next": "^16.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "puppeteer-core": "^25.16.0",
+    "typescript": "^5.9.2"
+  }
+}

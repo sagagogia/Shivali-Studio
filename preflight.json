@@ -1,0 +1,22 @@
+{
+  "scanned": "2026-11-02",
+  "findings": {
+    "framework": "Next.js16 / React19, package.json",
+    "source": "Isolated worktree from pinned OpenHiggsfield",
+    "fonts": "System body sans and Georgia wordmark, src/studio/tokens.css",
+    "palette": "Atelier warm paper with cool slate signal, src/studio/tokens.css",
+    "material": "MF03162 specifications; no local garment images",
+    "motion": "State only, reduced-motion fallback"
+  },
+  "preserve": [
+    "OpenHiggsfield model catalog in optional disabled advanced route",
+    "OpenMontage canonical checkout and audited local tools"
+  ],
+  "introduce": [
+    "Shivali workbench",
+    "SQLite records",
+    "private uploads",
+    "versioned approvals",
+    "guarded provider bridge"
+  ]
+}

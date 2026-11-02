@@ -1,0 +1,15 @@
+.studio-login { min-height:100dvh; display:grid; place-items:center; padding:24px; background:var(--studio-paper); color:var(--studio-ink); font-family:var(--studio-font); }
+.studio-login-card { width:100%; max-width:420px; box-sizing:border-box; padding:32px; border:1px solid var(--studio-rule); border-radius:var(--studio-radius); background:var(--studio-card); }
+.studio-login-brand { font-family:var(--studio-brand); font-size:22px; margin:0 0 24px; }
+.studio-login h1 { font-size:28px; line-height:1.2; margin:0 0 12px; font-weight:600; }
+.studio-login p { line-height:1.5; }
+.studio-login-card > p:not(.studio-login-brand) { color:var(--studio-secondary); margin-bottom:24px; }
+.studio-login label { display:block; font-size:14px; font-weight:600; }
+.studio-login input { display:block; width:100%; box-sizing:border-box; min-height:48px; padding:12px; margin:8px 0 16px; border:1px solid var(--studio-field-edge); border-radius:var(--studio-radius); font:inherit; background:var(--studio-card); color:var(--studio-ink); }
+.studio-login button { min-height:44px; font:inherit; cursor:pointer; border-radius:var(--studio-radius); }
+.studio-login-submit { width:100%; padding:12px; border:1px solid var(--studio-accent); background:var(--studio-accent); color:var(--studio-inverse); }
+.studio-login button:disabled { opacity:.65; cursor:wait; }
+.studio-login :is(button,input):focus-visible { outline:3px solid var(--studio-focus); outline-offset:3px; }
+.studio-login-logout { margin-top:16px; }
+.studio-login-logout button { background:var(--studio-transparent); border:0; padding:8px 0; text-decoration:underline; color:var(--studio-secondary); }
+.studio-login-error { background:var(--studio-error-bg); color:var(--studio-error); padding:12px; border-radius:var(--studio-radius); }
