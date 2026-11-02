@@ -12,9 +12,8 @@ services:
     dockerContext: .
     autoDeployTrigger: 'off'
     healthCheckPath: /api/health
-    maxShutdownDelaySeconds: 210
     disk:
-      name: shivali-studio-data
+    name: shivali-studio-data
       mountPath: /var/data
       sizeGB: 1
     envVars:
